@@ -1,0 +1,113 @@
+//链表的链式储存
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct node
+{
+    int data;
+    struct node *next;
+} Qnode;
+
+typedef struct Quene
+{
+    Qnode *front;
+    Qnode *rear;
+} Linkquene;
+
+void init_linkquene(Linkquene *p)
+{
+    // p=(Linkquene*)malloc(sizeof(Linkquene));//错误一。初始化是对队头指针和队尾指针初始化
+    p->front = p->rear = (Qnode *)malloc(sizeof(Qnode));
+    //注意一。这个判断要找个正规的来看看
+    if (p == NULL)
+    {
+        printf("内存不够");
+        return;
+    }
+    p->front->next = NULL; //错误二。应该是这两的下一个为空，rear不用
+                           // p->rear=NULL;
+}
+
+//关于初始化队列结点
+//入队操作
+void Push(Linkquene *p, int num)
+{
+    Qnode *t = (Qnode *)malloc(sizeof(Qnode)); //错误三。应该直接分配内存
+    //难得全对一次
+    t->data = num;
+    t->next = NULL;
+    p->rear->next = t;
+    p->rear = p->rear->next;
+}
+
+int Pop(Linkquene *p, int e)
+{ //传入正确
+    //错误四。没有判断队列是否为空，两个相等为空
+    if (p->front == p->rear)
+    {
+        printf("ERROR");
+    }
+    Qnode *t = (Qnode *)malloc(sizeof(Qnode)); //直接弄成下一个
+    t = p->front->next;
+    e = t->data;
+    p->front->next = t->next;
+    if (p->front == t)
+    { //不太理解
+        p->front = p->rear;
+    }
+    //错误五。要判断删除之后是否为空
+    //错误六。front指向的不是元素，还有，为什么是front==p
+    return e;
+}
+
+void Empty(Linkquene *p)
+{
+    if (p->front == p->rear)
+    {
+        printf("YES");
+    }
+    else
+        printf("NO");
+}
+
+void Query(Linkquene *p)
+{
+    //同错误四
+    if (p->front != NULL)
+    {
+        printf("%d", p->front->data);
+    }
+}
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    Linkquene *q;
+    init_linkquene(q);
+    int i;
+    char order[10];
+    int num;
+    int result = 0;
+    // scanf("%s",order);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%s", order);
+        if (strcmp(order, "push") == 1)
+        {
+            scanf("%d", &num);
+            Push(q, num);
+        }
+        else if (strcmp(order, "pop") == 1)
+        {
+            Pop(q, result);
+        }
+        else if (strcmp(order, "empty") == 1)
+        {
+            Empty(q);
+        }
+        else
+            Query(q);
+    }
+    return 0;
+}

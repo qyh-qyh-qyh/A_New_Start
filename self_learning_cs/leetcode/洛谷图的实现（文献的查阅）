@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct edgenode
+{
+    int adjdata; //表示邻接数据
+    struct edgenode *next;
+} enode;
+
+typedef struct vertexnode
+{
+    int data; //表示结点数据
+    enode *firstadj;
+} vnode;
+
+//vnode adjmatrix[100]; //省略了又一个结构体的建立
+
+typedef struct graph{
+   vnode adjmatrix[100];
+   int vnum;
+   int edgenum;
+}adjgraph;
+adjgraph g;
+int n, m;             // n表示文章数，m表示关联数
+scanf("%d%d", &n, &m);
+int i;
+g.vnum=n;
+g.edgenum=m;
+for(i = 0; i < n; i++)
+{
+    g.adjmatrix[i].data = i + 1; //对数组进行初始化
+}
+int front, rear;
+enode*temp;
+//enode*wei;//尾指针
+for(i = 0; i < m; i++)
+{
+    scanf("%d%d", &front, &rear);
+    temp=(enode*)malloc(sizeof(enode));
+    temp.adjdata=rear;
+    //尾接链表
+    g.adjmatrix[front-1].firstadj->next=temp;
+      
+}
