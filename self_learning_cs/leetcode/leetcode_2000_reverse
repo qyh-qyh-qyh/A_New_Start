@@ -1,0 +1,36 @@
+#include<stdio.h>
+
+char * reversePrefix(char * word, char ch){
+     int len=strlen(word);
+     char* res=(char*)malloc((len+1)*sizeof(char));
+     int position=0;
+     while(word[position]!='\0'){
+         if(word[position]==ch){
+             break;
+         }
+         position++;
+     }
+     if(position==len){
+         return word;
+     }
+     else{
+         int temp=position;//记录下当前位置
+         while(temp>=0){
+             res[position-temp]=word[temp];
+             temp--;
+         }
+         while(word[position]!='\0'){
+             res[position]=word[position];
+             position++;
+         }
+     }
+     res[len]='\0';
+     return res;
+}
+
+int main(){
+    char origin[10];
+    scanf("%s",origin);
+    char res[10]=reversePrefix(origin,'d');
+    return 0;
+}
